@@ -1,27 +1,101 @@
-# Angular12JwtAuth
+# Angular 12 JWT Authentication & Authorization example
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.0.2.
+## Flow for User Registration and User Login
+For JWT – Token based Authentication with Web API, we’re gonna call 2 endpoints:
+- POST `api/auth/signup` for User Registration
+- POST `api/auth/signin` for User Login
 
-## Development server
+You can take a look at following flow to have an overview of Requests and Responses that Angular 12 Client will make or receive.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+![angular-12-jwt-authentication-flow](angular-12-jwt-authentication-flow.png)
 
-## Code scaffolding
+## Angular JWT App Diagram with Router and HttpInterceptor
+![angular-12-jwt-authentication-overview](angular-12-jwt-authentication-overview.png)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+For more detail, please visit:
+> [Angular 12 JWT Authentication & Authorization with Web API](https://bezkoder.com/angular-12-jwt-auth/)
 
-## Build
+## With Spring Boot back-end
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+> [Angular 12 + Spring Boot: JWT Authentication and Authorization example](https://bezkoder.com/angular-12-spring-boot-jwt-auth/)
 
-## Running unit tests
+## With Node.js Express back-end
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+> [Angular 12 + Node.js Express: JWT Authentication and Authorization example](https://bezkoder.com/node-js-angular-12-jwt-auth/)
 
-## Running end-to-end tests
+Open `app/_helpers/auth.interceptor.js`, modify the code to work with **x-access-token** like this:
+```js
+...
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+// const TOKEN_HEADER_KEY = 'Authorization'; // for Spring Boot back-end
+const TOKEN_HEADER_KEY = 'x-access-token';   // for Node.js Express back-end
 
-## Further help
+@Injectable()
+export class AuthInterceptor implements HttpInterceptor {
+  ...
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    ...
+    if (token != null) {
+      // for Spring Boot back-end
+      // authReq = req.clone({ headers: req.headers.set(TOKEN_HEADER_KEY, 'Bearer ' + token) });
+
+      // for Node.js Express back-end
+      authReq = req.clone({ headers: req.headers.set(TOKEN_HEADER_KEY, token) });
+    }
+    return next.handle(authReq);
+  }
+}
+
+...
+```
+
+Run `ng serve --port 8081` for a dev server. Navigate to `http://localhost:8081/`.
+
+## More practice
+> [Angular JWT Refresh Token example with Http Interceptor](https://www.bezkoder.com/angular-12-refresh-token/)
+
+> [Angular CRUD Application example with Web API](https://bezkoder.com/angular-12-crud-app/)
+
+> [Angular Pagination example | ngx-pagination](https://bezkoder.com/angular-12-pagination-ngx/)
+
+> [Angular File upload example with progress bar & Bootstrap](https://bezkoder.com/angular-12-file-upload/)
+
+Fullstack with Node.js Express:
+> [Angular + Node.js Express + MySQL example](https://bezkoder.com/angular-12-node-js-express-mysql/)
+
+> [Angular + Node.js Express + PostgreSQL example](https://bezkoder.com/angular-12-node-js-express-postgresql/)
+
+> [Angular + Node.js Express + MongoDB example](https://bezkoder.com/angular-12-mongodb-node-js-express/)
+
+> [Angular + Node.js Express: File upload example](https://bezkoder.com/angular-12-node-js-file-upload/)
+
+Fullstack with Spring Boot:
+> [Angular + Spring Boot + MySQL example](https://bezkoder.com/angular-12-spring-boot-mysql/)
+
+> [Angular + Spring Boot + PostgreSQL example](https://bezkoder.com/angular-12-spring-boot-postgresql/)
+
+> [Angular + Spring Boot + MongoDB example](https://bezkoder.com/angular-12-spring-boot-mongodb/)
+
+> [Angular + Spring Boot: File upload example](https://bezkoder.com/angular-12-spring-boot-file-upload/)
+
+Fullstack with Django:
+> [Angular 12 + Django example](https://bezkoder.com/django-angular-12-crud-rest-framework/)
+
+> [Angular + Django + MySQL](https://bezkoder.com/django-angular-mysql/)
+
+> [Angular + Django + PostgreSQL](https://bezkoder.com/django-angular-postgresql/)
+
+> [Angular + Django + MongoDB](https://bezkoder.com/django-angular-mongodb/)
+
+Serverless with Firebase:
+> [Angular 12 Firebase CRUD with Realtime DataBase | AngularFireDatabase](https://bezkoder.com/angular-12-firebase-crud/)
+
+> [Angular 12 Firestore CRUD example with AngularFireStore](https://bezkoder.com/angular-12-firestore-crud-angularfirestore/)
+
+> [Angular 12 Firebase Storage: File Upload/Display/Delete example](https://bezkoder.com/angular-12-file-upload-firebase-storage/)
+
+Integration (run back-end & front-end on same server/port)
+> [How to integrate Angular with Node.js Restful Services](https://bezkoder.com/integrate-angular-12-node-js/)
+
+> [How to Integrate Angular with Spring Boot Rest API](https://bezkoder.com/integrate-angular-12-spring-boot/)
