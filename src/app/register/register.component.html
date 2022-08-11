@@ -41,7 +41,7 @@
           class="form-control"
           name="email"
           [(ngModel)]="form.email"
-          required
+          required="false"
           email
           #email="ngModel"
         />
@@ -59,8 +59,8 @@
           class="form-control"
           name="password"
           [(ngModel)]="form.password"
-          required
-          minlength="6"
+          required="false"
+          minlength="4"
           #password="ngModel"
         />
         <div class="alert-danger" *ngIf="password.errors && f.submitted">

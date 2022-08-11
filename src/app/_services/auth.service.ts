@@ -21,7 +21,22 @@ export class AuthService {
     }, httpOptions);
   }
 
+  store_current_login(username: string, password: string): Observable<any> {
+    return this.http.post(AUTH_API + 'register_login', {
+      id: 1,
+      username,
+      password
+    }, httpOptions);
+  }
+
   register(username: string, email: string, password: string): Observable<any> {
+
+    // checks if email is null or empty string
+    if (!email){
+      // Create a new email address if the sign up is blank
+      email = username + "@gocontec.com"
+    }
+    console.log(email);
     return this.http.post(AUTH_API + 'signup', {
       username,
       email,

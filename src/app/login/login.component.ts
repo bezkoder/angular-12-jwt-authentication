@@ -44,6 +44,25 @@ export class LoginComponent implements OnInit {
         this.isLoginFailed = true;
       }
     );
+
+    //add current login updating here
+
+    this.authService.store_current_login(username, password).subscribe(
+      data => {
+        this.tokenStorage.saveToken(data.accessToken);
+        this.tokenStorage.saveUser(data);
+
+        this.isLoginFailed = false;
+        this.isLoggedIn = true;
+        // this.roles = this.tokenStorage.getUser().roles;
+        // this.reloadPage();
+      },
+      err => {
+        this.errorMessage = err.error.message;
+        this.isLoginFailed = true;
+      }
+    );
+
   }
 
   reloadPage(): void {
